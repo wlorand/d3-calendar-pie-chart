@@ -4,12 +4,13 @@
 	<meta charset="UTF-8">
 	<title>Level Studios Employee Review Calendar Wheel as a D3 Pie Chart / Data Visualization</title>
  	<style>
-        .page-title {
-            font-size: 24px;
-        }
         svg {
             border: 1px dashed black;
         }
+		.page-title {
+			font-size: 24px;
+		}
+
         /* TODO: DRY out these styles if possible */
         .slice {
             fill: rgb(250,250,250);
@@ -39,6 +40,7 @@
 </head>
 <body>
 <h1 class="page-title">Level Studios Employee Review Calendar Wheel as a D3 Pie Chart Data Visualization</h1>
+	<!-- D3 v3 via CDN: // TODO: switch to local lib copy || npm module bundle -->
 	<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script>
 		/* render D3  Chart for LVL Review Calendar Wheel */
@@ -46,9 +48,9 @@
         // 0- get the current Month
         var now = new Date;
         var currentMonth = now.getMonth();
-        var currentMonth = 3; // temp debug for the UI
+        var currentMonth = 3; // temp debug hard-coded month for the UI
 
-        // 1- define params for the svg
+        // 1- define params for the svg // TODO: refactor to implement the D3 margin convention
         var width = 800,
             height = 400,
             radius = Math.min(width, height) / 2;
@@ -70,14 +72,14 @@
 
         var pie = d3.layout.pie()
                 .sort(null)
-                .value(function(d) { return d.sliceWidth; });
+                .value(function(d) { return d.sliceWidth; }); // recall key .value() method draws the pie with data!
 
         // 3- Fetch the data and render data viz
         d3.json("../../data/lvl-review-cal.json", function(error, data) {
             if (error) { console.log(error) };
 
             var g = svg.selectAll(".arc")
-                    .data(pie(data))
+                    .data(pie(data)) // stuff data into the pie before binding .data()
                     .enter().append("g")
                     .attr("class", "arc");
 
