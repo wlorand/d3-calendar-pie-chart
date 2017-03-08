@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Level Studios Employee Review Calendar Wheel as a D3 Pie Chart / Data Visualization</title>
+ 	<style>
+        .page-title {
+            font-size: 24px;
+        }
+        svg {
+            border: 1px dashed black;
+        }
+        /* TODO: DRY out these styles if possible */
+        .slice {
+            fill: rgb(250,250,250);
+            stroke: rgb(205,20,33);
+            stroke-width: 2;
+        }
+        .slice-active {
+            fill: rgb(205,20,33);
+            stroke: rgb(205,20,33);
+            stroke-width: 2;
+        }
+        .slice-text {
+            fill: rgb(37,37,37);
+            font-weight: 350;
+            font-family: "Gotham", sans-serif;
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .slice-text-active {
+            fill: rgb(250,250,250);
+            font-weight: 350;
+            font-family: "Gotham", sans-serif;
+            font-size: 16px;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1 class="page-title">Level Studios Employee Review Calendar Wheel as a D3 Pie Chart Data Visualization</h1>
+	<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script>
+		/* render D3  Chart for LVL Review Calendar Wheel */
+
+        // 0- get the current Month
+        var now = new Date;
+        var currentMonth = now.getMonth();
+        var currentMonth = 3; // temp debug for the UI
+
+        // 1- define params for the svg
+        var width = 800,
+            height = 400,
+            radius = Math.min(width, height) / 2;
+
+        var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        // 2- set up pie layout and needed arc generators
+        var arc = d3.svg.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(50); // > 0 for donut chart
+
+        var labelArc = d3.svg.arc()
+                .outerRadius(radius - 85)
+                .innerRadius(radius - 80);
+
+        var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) { return d.sliceWidth; });
+
+        // 3- Fetch the data and render data viz
+        d3.json("../../data/lvl-review-cal.json", function(error, data) {
+            if (error) { console.log(error) };
+
+            var g = svg.selectAll(".arc")
+                    .data(pie(data))
+                    .enter().append("g")
+                    .attr("class", "arc");
+
+            g.append("path")
+                    .attr("d", arc)
+                    .attr("class", function(d) { return (d.data.sliceMonth === currentMonth ? "slice-active" : "slice"); });
+
+            g.append("text")
+                    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+                    .attr("dy", ".75em")
+                    .attr("dx", ".15em")
+                    .attr("class", function(d) { return (d.data.sliceMonth === currentMonth ? "slice-text-active" : "slice-text"); })
+                    .attr('text-anchor','middle')
+                    .text(function(d) { return d.data.sliceLabel });
+
+            g.append("text")
+                    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+                    .attr("dy", "-.95em")
+                    .attr("dx", ".15em")
+                    .attr("class", function(d) { return (d.data.sliceMonth === currentMonth ? "slice-text-active" : "slice-text"); })
+                    .attr('text-anchor','middle')
+                    .text(function(d) { return d.data.sliceMonthLabel });
+        });
+	</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "lvl-review-cal",
+  "version": "0.0.2",
+  "description": "d3 pie chart for lvl review calendar",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "local"
+  },
+  "keywords": [
+    "d3",
+    "pie",
+    "level"
+  ],
+  "author": "B51",
+  "license": "ISC"
+}
