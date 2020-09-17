@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>
-      Level Studios Employee Review Calendar Wheel as a D3 Pie Chart / Data
-      Visualization
-    </title>
+    <title>Level Studios Employee Review Calendar Wheel</title>
     <style>
       svg {
         border: 1px dashed black;
@@ -54,7 +51,7 @@
       // 0- get the current Month
       var now = new Date();
       var currentMonth = now.getMonth();
-      var currentMonth = 8; // temp debug hard-coded month for the UI
+      var currentMonth = 4; // temp debug hard-coded month for the UI
 
       // 1- define params for the svg // TODO: refactor to implement the D3 margin convention
       var width = 800,
@@ -88,8 +85,11 @@
         }); // recall key .value() method draws the pie with data!
 
       // 3- Fetch the data and render data viz
+      // TODO: update d3 to v6 and move to Promises
       d3.json('../../data/lvl-review-cal.json', (error, data) => {
         if (error) console.log(error);
+
+        // move to a renderPie named function for best practice D3 dev
 
         var g = svg
           .selectAll('.arc')

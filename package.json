@@ -4,7 +4,7 @@
   "description": "d3 pie chart for lvl review calendar",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "http-server -p 3333"
   },
   "repository": {
     "type": "git",
